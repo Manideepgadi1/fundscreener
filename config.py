@@ -7,7 +7,7 @@ class Config:
     """Base configuration"""
     # Server settings
     HOST = os.environ.get('FLASK_HOST', '0.0.0.0')
-    PORT = int(os.environ.get('FLASK_PORT', 8001))  # Using port 8001 to avoid conflicts
+    PORT = int(os.environ.get('FLASK_PORT', 8004))  # Using port 8004 - verified free
     DEBUG = os.environ.get('FLASK_DEBUG', 'False') == 'True'
     
     # Application settings
@@ -20,12 +20,12 @@ class Config:
 class DevelopmentConfig(Config):
     """Development configuration"""
     DEBUG = True
-    PORT = 8001
+    PORT = 8004
 
 class ProductionConfig(Config):
     """Production configuration"""
     DEBUG = False
-    PORT = 8001
+    PORT = 8004
 
 # Configuration dictionary
 config = {

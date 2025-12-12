@@ -9,8 +9,8 @@ Group=www-data
 WorkingDirectory=/var/www/fundscreener
 Environment="PATH=/var/www/fundscreener/venv/bin"
 Environment="FLASK_CONFIG=production"
-Environment="FLASK_PORT=8001"
-ExecStart=/var/www/fundscreener/venv/bin/gunicorn --workers 4 --bind 127.0.0.1:8001 --timeout 120 wsgi:app
+Environment="FLASK_PORT=8004"
+ExecStart=/var/www/fundscreener/venv/bin/gunicorn --workers 4 --bind 127.0.0.1:8004 --timeout 120 wsgi:app
 Restart=always
 RestartSec=10
 
