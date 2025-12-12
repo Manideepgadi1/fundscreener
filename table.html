@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutual Fund Screener</title>
+    <link rel="stylesheet" href="table-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <h1>📊 Mutual Fund Screener</h1>
+            </div>
+            <div class="header-actions">
+                <button id="exportBtn" class="btn btn-export">📥 Export CSV</button>
+            </div>
+        </header>
+
+        <div class="column-selector">
+            <div class="selector-wrapper">
+                <span class="selector-label">📋 Select Columns:</span>
+                <div class="selector-grid" id="columnCheckboxes">
+                    <!-- Checkboxes will be generated dynamically -->
+                </div>
+                <button id="applySelection" class="btn btn-primary btn-apply">Apply</button>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <input type="text" id="globalSearch" placeholder="🔍 Global search across all columns..." />
+                <button id="clearFilters" class="btn btn-secondary">Clear All Filters</button>
+            </div>
+            <div class="records-info">
+                <span class="badge" id="recordsInfo">Total: 0 funds</span>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="loading-state" id="loadingState">
+                <div class="spinner"></div>
+                <p>Loading data...</p>
+            </div>
+            
+            <table class="data-table" id="dataTable">
+                <thead>
+                    <tr id="headerRow">
+                        <!-- Headers will be generated dynamically -->
+                    </tr>
+                    <tr id="filterRow">
+                        <!-- Filter inputs will be generated dynamically -->
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination" id="pagination">
+            <div class="pagination-info">
+                <span id="paginationText">Showing 0-0 of 0</span>
+            </div>
+            <div class="pagination-controls">
+                <button id="firstPage" class="btn-page" title="First Page">⏮️</button>
+                <button id="prevPage" class="btn-page" title="Previous">◀️</button>
+                <div class="page-numbers" id="pageNumbers"></div>
+                <button id="nextPage" class="btn-page" title="Next">▶️</button>
+                <button id="lastPage" class="btn-page" title="Last Page">⏭️</button>
+            </div>
+            <div class="per-page-selector">
+                <label for="perPageSelect">Rows:</label>
+                <select id="perPageSelect">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script src="table-script.js"></script>
+</body>
+</html>
