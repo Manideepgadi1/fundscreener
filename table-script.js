@@ -46,7 +46,7 @@ function setupEventListeners() {
 }
 
 async function initializeApp() {
-    console.log('Initializing Mutual Fund Screener...');
+    console.log('Initializing PMS Screener...');
     await loadAllData();
 }
 
@@ -105,18 +105,29 @@ function applyColumnSelection() {
     applyFiltersAndSort();
 }
 
-function applyFiltersAndSort() {
+function applyFiltersAndSort(fullRender = true) {
     // Start with all data
     let data = [...allData];
     
     // Apply column filters
     Object.keys(columnFilters).forEach(column => {
-        const filterValue = columnFilters[column].toLowerCase();
+        const filterValue = columnFilters[column];
         if (filterValue) {
             data = data.filter(row => {
                 const cellValue = row[column];
                 if (cellValue === null || cellValue === undefined) return false;
-                return String(cellValue).toLowerCase().includes(filterValue);
+                
+                // Try numeric comparison if filter value is a number
+                const filterNum = parseFloat(filterValue);
+                const cellNum = parseFloat(cellValue);
+                
+                if (!isNaN(filterNum) && !isNaN(cellNum)) {
+                    // Numeric comparison: >= filter value
+                    return cellNum >= filterNum;
+                } else {
+                    // Text comparison: contains
+                    return String(cellValue).toLowerCase().includes(filterValue.toLowerCase());
+                }
             });
         }
     });
@@ -152,52 +163,70 @@ function applyFiltersAndSort() {
     totalPages = Math.ceil(totalRecords / perPage) || 1;
     currentPage = Math.min(currentPage, totalPages);
     
-    renderTable();
+    renderTable(fullRender);
     updatePagination();
 }
 
-function renderTable() {
+function renderTable(fullRender = true) {
     const headerRow = document.getElementById('headerRow');
     const filterRow = document.getElementById('filterRow');
     const tbody = document.getElementById('tableBody');
     
-    // Render headers with sort capability and resize handles
-    headerRow.innerHTML = visibleColumns.map((col, index) => {
-        const isSorted = sortColumn === col;
-        const sortClass = isSorted ? `sort-${sortDirection}` : '';
-        const width = columnWidths[col] ? `style="width: ${columnWidths[col]}px; max-width: ${columnWidths[col]}px;"` : '';
-        return `
-            <th class="sortable ${sortClass}" ${width} data-column="${col}">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span onclick="handleSort('${col}')" style="flex: 1; cursor: pointer;">
-                        ${col}
-                        <span class="sort-icon"></span>
-                    </span>
-                    <div class="resize-handle" data-column="${col}"></div>
-                </div>
-            </th>
-        `;
-    }).join('');
+    // Only re-render headers and filters on full render (column changes, initial load)
+    if (fullRender) {
+        // Render headers with sort capability and resize handles
+        headerRow.innerHTML = visibleColumns.map((col, index) => {
+            const isSorted = sortColumn === col;
+            const sortClass = isSorted ? `sort-${sortDirection}` : '';
+            const width = columnWidths[col] ? `style="width: ${columnWidths[col]}px; max-width: ${columnWidths[col]}px;"` : '';
+            return `
+                <th class="sortable ${sortClass}" ${width} data-column="${col}">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span onclick="handleSort('${col}')" style="flex: 1; cursor: pointer;">
+                            ${col}
+                            <span class="sort-icon"></span>
+                        </span>
+                        <div class="resize-handle" data-column="${col}"></div>
+                    </div>
+                </th>
+            `;
+        }).join('');
+        
+        // Add resize event listeners
+        document.querySelectorAll('.resize-handle').forEach(handle => {
+            handle.addEventListener('mousedown', startResize);
+        });
+        
+        // Render filter inputs
+        filterRow.innerHTML = visibleColumns.map(col => {
+            const width = columnWidths[col] ? `style="width: ${columnWidths[col]}px; max-width: ${columnWidths[col]}px;"` : '';
+            return `
+                <th ${width}>
+                    <input type="text" class="filter-input" 
+                           placeholder="Filter..." 
+                           data-column="${col}"
+                           value="${columnFilters[col] || ''}">
+                </th>
+            `;
+        }).join('');
+        
+        // Attach filter input event listeners
+        document.querySelectorAll('.filter-input').forEach(input => {
+            input.addEventListener('input', function() {
+                handleColumnFilter(this.dataset.column, this.value);
+            });
+        });
+    } else {
+        // Update sort indicators only
+        document.querySelectorAll('#headerRow th').forEach(th => {
+            const col = th.dataset.column;
+            if (col) {
+                th.className = sortColumn === col ? `sortable sort-${sortDirection}` : 'sortable';
+            }
+        });
+    }
     
-    // Add resize event listeners
-    document.querySelectorAll('.resize-handle').forEach(handle => {
-        handle.addEventListener('mousedown', startResize);
-    });
-    
-    // Render filter inputs
-    filterRow.innerHTML = visibleColumns.map(col => {
-        const width = columnWidths[col] ? `style="width: ${columnWidths[col]}px; max-width: ${columnWidths[col]}px;"` : '';
-        return `
-            <th ${width}>
-                <input type="text" class="filter-input" 
-                       placeholder="Filter..." 
-                       value="${columnFilters[col] || ''}"
-                       onkeyup="handleColumnFilter('${col}', this.value)">
-            </th>
-        `;
-    }).join('');
-    
-    // Render data rows
+    // Always render data rows (tbody only)
     const start = (currentPage - 1) * perPage;
     const end = Math.min(start + perPage, totalRecords);
     const pageData = filteredData.slice(start, end);
@@ -246,7 +275,7 @@ function handleColumnFilter(column, value) {
         delete columnFilters[column];
     }
     currentPage = 1;
-    applyFiltersAndSort();
+    applyFiltersAndSort(false); // Pass false to prevent filter input re-render
 }
 
 function handleGlobalSearch(e) {
