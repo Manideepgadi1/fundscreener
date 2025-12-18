@@ -1,6 +1,6 @@
 // Get the base URL - works for both root and subpath deployments
-const API_BASE_URL = window.location.pathname.includes('/fundscreener') 
-    ? window.location.origin + '/fundscreener'
+const API_BASE_URL = window.location.pathname.includes('/pms-screener') 
+    ? window.location.origin + '/pms-screener'
     : window.location.origin;
 
 let currentPage = 1;
