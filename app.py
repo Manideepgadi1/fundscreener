@@ -37,6 +37,18 @@ def index():
     """Serve the main application page"""
     return send_file('table.html')
 
+
+@app.route('/table-script.js')
+def table_script():
+    """Serve the main frontend script explicitly (workaround for static serving)."""
+    return send_file('table-script.js')
+
+
+@app.route('/table-styles.css')
+def table_styles():
+    """Serve the stylesheet explicitly."""
+    return send_file('table-styles.css')
+
 @app.route('/health')
 @app.route('/api/health')
 def health():
