@@ -1,10 +1,10 @@
-# PMS Screnner - Deployment Summary
+# PMS Screener - Deployment Summary
 
 ## 🎉 Deployment Successfully Completed!
 
 **Date:** December 12, 2025  
 **Server:** 82.25.105.18  
-**Application:** PMS Screnner (Mutual Fund Comparison Tool)
+**Application:** PMS Screener (Mutual Fund Comparison Tool)
 
 ---
 
