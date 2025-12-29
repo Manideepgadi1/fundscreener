@@ -37,6 +37,16 @@ def index():
     """Serve the main application page"""
     return send_file('table.html')
 
+@app.route('/table-styles.css')
+def serve_css():
+    """Serve CSS file"""
+    return send_file('table-styles.css', mimetype='text/css')
+
+@app.route('/table-script.js')
+def serve_js():
+    """Serve JavaScript file"""
+    return send_file('table-script.js', mimetype='application/javascript')
+
 @app.route('/health')
 @app.route('/api/health')
 def health():
