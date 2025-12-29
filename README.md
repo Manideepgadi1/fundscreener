@@ -1,4 +1,4 @@
-# 📊 Fund Screener
+# 📊 PMS Screnner
 
 Professional mutual fund screening and analysis tool with advanced filtering, sorting, and export capabilities.
 

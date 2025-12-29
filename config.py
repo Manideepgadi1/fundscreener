@@ -1,5 +1,5 @@
 """
-Configuration file for Fund Screener application
+Configuration file for PMS Screnner application
 """
 import os
 
@@ -11,7 +11,7 @@ class Config:
     DEBUG = os.environ.get('FLASK_DEBUG', 'False') == 'True'
     
     # Application settings
-    APP_NAME = 'Fund Screener'
+    APP_NAME = 'PMS Screnner'
     CSV_FILE = os.environ.get('CSV_FILE', 'FinExport_11-12-2025.csv')
     
     # Security (for production)

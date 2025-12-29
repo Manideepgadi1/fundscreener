@@ -1,10 +1,10 @@
-# Fund Screener - Deployment Summary
+# PMS Screnner - Deployment Summary
 
 ## 🎉 Deployment Successfully Completed!
 
 **Date:** December 12, 2025  
 **Server:** 82.25.105.18  
-**Application:** Fund Screener (Mutual Fund Comparison Tool)
+**Application:** PMS Screnner (Mutual Fund Comparison Tool)
 
 ---
 
@@ -228,7 +228,7 @@ curl http://82.25.105.18/fundscreener/api/health
 Expected Response:
 ```json
 {
-  "app": "Fund Screener",
+  "app": "PMS Screnner",
   "columns": 45,
   "port": 8004,
   "records": 556,

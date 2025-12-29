@@ -1,5 +1,5 @@
 [Unit]
-Description=Fund Screener Web Application
+Description=PMS Screnner Web Application
 After=network.target
 
 [Service]
